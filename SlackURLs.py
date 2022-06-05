@@ -62,11 +62,14 @@ def analyze_files(filename, subfolder):  # takes the argument from below (z) as 
         toHoldURLs = []
         sortName = str(subfolder + " from " + filename.name[:-5])
         print(f"URls found: {len(allURLs)}")
-        for i in allURLs:
-            holdItems = re.compile('^(.*)(twitter|linkedin|imgur|giphy|tenor|slack)(.*)$')
-            if holdItems.search(i):  # search the item in the list for the regex above
-                toHoldURLs.append(i)  # if the item is found copy it to held and
-                allURLs.remove(i)  # remove it from all
+        holdItems = re.compile('(.*)(twitter|linkedin|imgur|giphy|tenor|slack)(.*)')
+        freshAll = allURLs.copy()
+        for urllistitem in freshAll:
+            print(urllistitem)
+            if holdItems.search(urllistitem):  # search the item in the list for the regex above
+                # This is failing to find slack links in some files ex: hallway-schreiber from 2022-05-08
+                toHoldURLs.append(urllistitem)  # if the item is found copy it to held and
+                allURLs.remove(urllistitem)  # remove it from all
 
         if len(allURLs) >= 1:  # if what is left is more than one URL
             gandalfReviewed[sortName] = allURLs  # add it to gandalf
